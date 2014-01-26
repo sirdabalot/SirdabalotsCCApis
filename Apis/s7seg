@@ -1,0 +1,116 @@
+side = "back"
+
+segments = {
+	a = { state = false, col = colours.white },
+	b = { state = false, col = colours.yellow },
+	c = { state = false, col = colours.black },
+	d = { state = false, col = colours.brown },
+	e = { state = false, col = colours.purple },
+	f = { state = false, col = colours.green },
+	g = { state = false, col = colours.blue }
+}
+
+function output( )
+	out = 0
+	for k, v in pairs( segments ) do
+		if ( v.state == true ) then
+			out = out + v.col
+		end
+	end
+	redstone.setBundledOutput( side, out )
+end
+
+function display( num )
+	if ( num == 0 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = true
+		segments.e.state = true
+		segments.f.state = true
+		segments.g.state = true
+	elseif ( num == 1 ) then
+		segments.a.state = false
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = false
+		segments.e.state = false
+		segments.f.state = false
+		segments.g.state = false
+	elseif ( num == 2 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = false
+		segments.d.state = true
+		segments.e.state = true
+		segments.f.state = false
+		segments.g.state = true
+	elseif ( num == 3 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = true
+		segments.e.state = false
+		segments.f.state = false
+		segments.g.state = true
+	elseif ( num == 4 ) then
+		segments.a.state = false
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = false
+		segments.e.state = false
+		segments.f.state = true
+		segments.g.state = true
+	elseif ( num == 5 ) then
+		segments.a.state = true
+		segments.b.state = false
+		segments.c.state = true
+		segments.d.state = true
+		segments.e.state = false
+		segments.f.state = true
+		segments.g.state = true
+	elseif ( num == 6 ) then
+		segments.a.state = false
+		segments.b.state = false
+		segments.c.state = true
+		segments.d.state = true
+		segments.e.state = true
+		segments.f.state = true
+		segments.g.state = true
+	elseif ( num == 7 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = false
+		segments.e.state = false
+		segments.f.state = false
+		segments.g.state = false
+	elseif ( num == 8 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = true
+		segments.e.state = true
+		segments.f.state = true
+		segments.g.state = true
+	elseif ( num == 9 ) then
+		segments.a.state = true
+		segments.b.state = true
+		segments.c.state = true
+		segments.d.state = false
+		segments.e.state = false
+		segments.f.state = true
+		segments.g.state = true
+	end
+	output( )
+end
+
+function setSide( nside )
+	side = nside
+end
+
+function setColour( l, ncol )
+	segments.[ l ].col = ncol
+end
+
+display( 2 )

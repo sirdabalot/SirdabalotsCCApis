@@ -1,0 +1,140 @@
+function printCentered( per, str, ypos )
+        pw, pl = per.getSize( )
+        per.setCursorPos( ( ( pw / 2 ) - ( #str / 2 ) ), ypos )
+        per.write( str )
+end
+
+function drawHeader( per, str )
+        pw, pl = per.getSize( )
+        printCentered( per, str, 1 )
+        per.setCursorPos( 1, 2 )
+        write( string.rep( "=", pw ) )
+end
+
+function addSpaces( str, len )
+        str = str .. string.rep( " ", len - #str )
+end
+
+function clearScreen( per )
+        per.clear( )
+        per.setCursorPos( 1, 1 )
+end
+
+function fillBackground( per, str, col )
+        pw, pl = per.getSize( )
+        for x = 1, pw do
+                for y = 1, pl do
+                        per.setCursorPos( x, y )
+                        per.setBackgroundColour( col )
+                        write( str )
+                end
+        end
+end
+
+function drawWindow( per, str, col, x1, y1, x2, y2 )
+        per.setCursorPos( x1, y1 )
+        per.setBackgroundColour( col )
+        for x = x1, x2 do
+                for y = y1, y2 do
+                        per.setCursorPos( x, y )
+                        per.write( " " )
+                end
+        end
+        per.setCursorPos( x1, y1 )
+        per.write( str )
+end
+
+function drawTabs( per, tabs, ypos, sel )
+        pw, pl = per.getSize( )
+        per.setBackgroundColour( colours.blue )
+        for i = 1, pw do
+                per.setCursorPos( i, ypos )
+                per.write( " " )
+        end
+        per.setCursorPos( 1, ypos )
+        for i = 1, #tabs do
+                ccx, ccy = term.getCursorPos( )
+                per.setCursorPos( ccx + 1, ypos )
+                if i == sel then
+                        per.setBackgroundColour( colours.white )
+                        per.setTextColour( colours.blue )
+                else
+                        per.setBackgroundColour( colours.blue )
+                        per.setTextColour( colours.white )
+                end
+                per.write( tabs[ i ] )
+        end
+end
+
+function drawIMG( per, img, x, y )
+        for i = 1, #img do
+                per.setCursorPos( x, y - 1 + i )
+                per.write( img[ i ] )
+        end
+end
+
+function drawAnim( per, anim, x, y, delay )
+        while true do
+                for i = 1, #anim do
+                        for n = 1, #anim[ i ] do
+                                per.setCursorPos( x, y - 1 + n )
+                                per.write( anim[ i ][ n ] )
+                        end
+                        sleep( delay )
+                end
+        end
+end
+
+function errMsg( per, str, dtime )
+        pw, pl = per.getSize( )
+        fillBackground( per, " ", colours.blue )
+        printCentered( per, str, ( pl / 2 ) + 1 )
+        for i = 1, dtime do
+                printCentered( per, "            ", pl / 2 )
+                sleep( 0.5 )
+                printCentered( per, "SYS.FLR:", pl / 2 )
+                sleep( 0.5 )
+        end
+        clearScreen( per )
+end
+
+function drawCircle( per, col, x, y, r )
+        per.setBackgroundColour( col )
+        for i = 1, 360 do
+                per.setCursorPos( x + ( math.cos( i ) * r ), y + ( math.sin( i ) * r ) )
+                per.write( " " )
+        end
+end
+
+function drawProgressBar( per, x, y, wi, len, fill )
+        pw, pl = per.getSize( )
+        per.setBackgroundColour( colours.red )
+        for i = 1, wi do
+                for n = 1, len do
+                        per.setCursorPos( ( x - 1 ) + i, ( y - 1 ) + n )
+                        per.write( " " )
+                end
+        end
+        per.setBackgroundColour( colours.lime )
+        for i = 1, math.ceil( ( wi / 100 ) * fill ) do
+                for n = 1, len do
+                        per.setCursorPos( ( x - 1 ) + i, ( y - 1 ) + n )
+                        per.write( " " )
+                end
+        end
+end
+
+function inRange( x, y, x1, x2, y1, y2 )
+	if ( x >= x1 and x <= x2 and y >= y1 and y <= y2 )
+		return true
+	else
+		return false
+	end
+end
+
+function printVertical( per, x, y, str )
+	for i = 1, string.len( str ) do
+		per.setCursorPos( x, y + i )
+		ch = string.sub( str, i, i )
+	end
+end
