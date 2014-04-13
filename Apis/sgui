@@ -146,7 +146,7 @@ function drawTable( per, x, y, w, h, d )
 		per.setCursorPos( x - 1 + i, y - 1 + h )
 		per.write( "=" )
 	end
-	for i = 1, h - 1 do
+	for i = 1, h - 2 do
 		per.setCursorPos( x, y + i )
 		per.write( "|" )
 		per.setCursorPos( x - 1 + w, y + i )
