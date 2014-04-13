@@ -1,0 +1,13 @@
+function splitString( s, c )
+	tab = {}
+	lfb, lfe = 1, 1
+	while true do
+		lfb, lfe = string.find( s, c, lfe )
+		fs = string.sub( s, lfb, lfe )
+		if fs == nil then
+			break
+		end
+		table.insert( tab, fs )
+	end
+	return tab
+end
