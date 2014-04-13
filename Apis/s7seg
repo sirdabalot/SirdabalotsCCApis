@@ -112,5 +112,3 @@ end
 function setColour( l, ncol )
 	segments.[ l ].col = ncol
 end
-
-display( 2 )

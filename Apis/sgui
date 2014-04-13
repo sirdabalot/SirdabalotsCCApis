@@ -125,7 +125,7 @@ function drawProgressBar( per, x, y, wi, len, fill )
 end
 
 function inRange( x, y, x1, x2, y1, y2 )
-	if ( x >= x1 and x <= x2 and y >= y1 and y <= y2 )
+	if ( x >= x1 and x <= x2 and y >= y1 and y <= y2 ) then
 		return true
 	else
 		return false
@@ -136,5 +136,22 @@ function printVertical( per, x, y, str )
 	for i = 1, string.len( str ) do
 		per.setCursorPos( x, y + i )
 		ch = string.sub( str, i, i )
+	end
+end
+
+function drawTable( per, x, y, w, h, d )
+	for i = 1, w do
+		per.setCursorPos( x - 1 + i, y )
+		per.write( "=" )
+		per.setCursorPos( x - 1 + i, y - 1 + h )
+		per.write( "=" )
+	end
+	for i = 1, h - 1 do
+		per.setCursorPos( x, y + i )
+		per.write( "|" )
+		per.setCursorPos( x - 1 + w, y + i )
+		per.write( "|" )
+		per.setCursorPos( x - 1 + d, y + i )
+		per.write( "|" )
 	end
 end
