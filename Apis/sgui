@@ -31,16 +31,16 @@ function fillBackground( per, str, col )
         end
 end
 
-function drawWindow( per, str, col, x1, y1, x2, y2 )
-        per.setCursorPos( x1, y1 )
+function drawWindow( per, str, col, rect )
+        per.setCursorPos( rect["x1"], ["y1"] )
         per.setBackgroundColour( col )
-        for x = x1, x2 do
-                for y = y1, y2 do
+        for x = rect["x1"], rect["x2"] do
+                for y = rect["y1"], ["y2"] do
                         per.setCursorPos( x, y )
                         per.write( " " )
                 end
         end
-        per.setCursorPos( x1, y1 )
+        per.setCursorPos( rect["x1"], rect["y1"] )
         per.write( str )
 end
 
@@ -124,8 +124,8 @@ function drawProgressBar( per, x, y, wi, len, fill )
         end
 end
 
-function inRange( x, y, x1, x2, y1, y2 )
-	if ( x >= x1 and x <= x2 and y >= y1 and y <= y2 ) then
+function inRange( x, y, rect )
+	if ( x >= rect["x1"] and x <= rect["x2"] and y >= rect["y1"] and y <= rect["y2"] ) then
 		return true
 	else
 		return false
