@@ -44,6 +44,20 @@ function drawWindow( per, str, col, rect )
         per.write( str )
 end
 
+function drawButton( per, bdat )
+	per.setBackgroundColor( bdat["col"] )
+	for x = bdat["x1"], bdat["x2"] do
+		for y = bdat["y1"], bdat["y2"] do
+			per.setCursorPos( x, y )
+			per.write( " " )
+		end
+	end
+	lx = math.ceil( bdat["x1"] + ( bdat["x2"] - bdat["x1"] ) / 2 - #bdat["label"] / 2 )
+	ly = math.floor( bdat["y1"] + ( bdat["y2"] - bdat["y1"] ) / 2 )
+	per.setCursorPos( lx, ly )
+	per.write( bdat["label"] )
+end
+
 function drawTabs( per, tabs, ypos, sel )
         pw, pl = per.getSize( )
         per.setBackgroundColour( colours.blue )
