@@ -32,10 +32,10 @@ function fillBackground( per, str, col )
 end
 
 function drawWindow( per, str, col, rect )
-        per.setCursorPos( rect["x1"], ["y1"] )
+        per.setCursorPos( rect["x1"], rect["y1"] )
         per.setBackgroundColour( col )
         for x = rect["x1"], rect["x2"] do
-                for y = rect["y1"], ["y2"] do
+                for y = rect["y1"], rect["y2"] do
                         per.setCursorPos( x, y )
                         per.write( " " )
                 end
