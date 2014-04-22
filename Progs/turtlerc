@@ -1,0 +1,220 @@
+os.loadAPI("/SirdabalotsCCApis/Apis/sgui")
+
+id = 2
+
+function sendCMD( cmd )
+	rednet.open( "back" )
+	rednet.send( id, cmd )
+	rednet.close( "back" )
+end
+
+buttons = {
+
+	-- Movement
+	
+	gfb = {
+		["x1"] = 3,
+		["x2"] = 4,
+		["y1"] = 1,
+		["y2"] = 1,
+		["col"] = colours.blue,
+		["label"] = "FD"
+	},
+	gbb = {
+		["x1"] = 3,
+		["x2"] = 4,
+		["y1"] = 3,
+		["y2"] = 3,
+		["col"] = colours.blue,
+		["label"] = "BK"
+	},
+	glb = {
+		["x1"] = 1,
+		["x2"] = 2,
+		["y1"] = 2,
+		["y2"] = 2,
+		["col"] = colours.blue,
+		["label"] = "LE"
+	},
+	grb = {
+		["x1"] = 5,
+		["x2"] = 6,
+		["y1"] = 2,
+		["y2"] = 2,
+		["col"] = colours.blue,
+		["label"] = "RI"
+	},
+	gub = {
+		["x1"] = 8,
+		["x2"] = 9,
+		["y1"] = 1,
+		["y2"] = 1,
+		["col"] = colours.blue,
+		["label"] = "UP"
+	},
+	gdb = {
+		["x1"] = 8,
+		["x2"] = 9,
+		["y1"] = 3,
+		["y2"] = 3,
+		["col"] = colours.blue,
+		["label"] = "DN"
+	},
+	
+	-- Digging
+	
+	dfb = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 7,
+		["y2"] = 7,
+		["col"] = colours.orange,
+		["label"] = "DGF"
+	},
+	dub = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 5,
+		["y2"] = 5,
+		["col"] = colours.orange,
+		["label"] = "DGU"
+	},
+	ddb = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 9,
+		["y2"] = 9,
+		["col"] = colours.orange,
+		["label"] = "DGD"
+	},
+	
+	-- Attacking
+	
+	afb = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 7,
+		["y2"] = 7,
+		["col"] = colours.red,
+		["label"] = "ATF"
+	},
+	aub = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 5,
+		["y2"] = 5,
+		["col"] = colours.red,
+		["label"] = "ATU"
+	},
+	adb = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 9,
+		["y2"] = 9,
+		["col"] = colours.red,
+		["label"] = "ATD"
+	},
+	
+	-- Placing
+	
+	pfb = {
+		["x1"] = 9,
+		["x2"] = 11,
+		["y1"] = 7,
+		["y2"] = 7,
+		["col"] = colours.green,
+		["label"] = "PLF"
+	},
+	pub = {
+		["x1"] = 9,
+		["x2"] = 11,
+		["y1"] = 9,
+		["y2"] = 9,
+		["col"] = colours.green,
+		["label"] = "PLD"
+	},
+	pdb = {
+		["x1"] = 9,
+		["x2"] = 11,
+		["y1"] = 5,
+		["y2"] = 5,
+		["col"] = colours.green,
+		["label"] = "PLU"
+	},
+	
+	-- Sucking
+	
+	sfb = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 13,
+		["y2"] = 13,
+		["col"] = colours.lime,
+		["label"] = "SUF"
+	},
+	sub = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 11,
+		["y2"] = 11,
+		["col"] = colours.lime,
+		["label"] = "SUD"
+	},
+	sdb = {
+		["x1"] = 1,
+		["x2"] = 3,
+		["y1"] = 15,
+		["y2"] = 15,
+		["col"] = colours.lime,
+		["label"] = "SUU"
+	},
+	
+	-- Dropping
+	
+	drfb = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 13,
+		["y2"] = 13,
+		["col"] = colours.cyan,
+		["label"] = "DRF"
+	},
+	drub = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 11,
+		["y2"] = 11,
+		["col"] = colours.cyan,
+		["label"] = "DRD"
+	},
+	drdb = {
+		["x1"] = 5,
+		["x2"] = 7,
+		["y1"] = 15,
+		["y2"] = 15,
+		["col"] = colours.cyan,
+		["label"] = "DRU"
+	}
+}
+
+function drawButtons( )
+	for k, button in pairs( buttons ) do
+		sgui.drawButton( term, button )
+	end
+end
+
+function wClk( )
+	e, b, x, y = os.pullEvent( "mouse_click" )
+	for k, button in pairs( buttons ) do
+		if ( sgui.inRange( x, y, button ) ) then
+			sendCMD( button["label"] )
+		end
+	end
+end
+
+while true do
+	term.setBackgroundColour( colours.black )
+	term.clear( )
+	drawButtons( )
+	wClk( )
+end

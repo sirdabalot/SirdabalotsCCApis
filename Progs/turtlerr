@@ -1,0 +1,57 @@
+status = { turtle.getFuelLevel( ) }
+
+function waitForSignal( )
+	rednet.open( "left" )
+	event, id, message, distance, protocol = os.pullEvent( "rednet_message" )
+	rednet.close( "left" )
+	print( message )
+	
+	-- Movement
+	
+	if ( message == "FD" ) then
+		turtle.forward( )
+	elseif ( message == "BK" ) then
+		turtle.back( )
+	elseif ( message == "LE" ) then
+		turtle.turnLeft( )
+	elseif ( message == "RI" ) then
+		turtle.turnRight( )
+	elseif ( message == "UP" ) then
+		turtle.up( )
+	elseif ( message == "DN" ) then
+		turtle.down( )
+	
+	-- Digging
+	
+	elseif ( message == "DGF" ) then
+		turtle.dig( )
+	elseif ( message == "DGD" ) then
+		turtle.digDown( )
+	elseif ( message == "DGU" ) then
+		turtle.digUp( )
+	
+	-- Attacking
+	
+	elseif ( message == "ATF" ) then
+		turtle.attack( )
+	elseif ( message == "ATU" ) then
+		turtle.attackDown( )
+	elseif ( message == "ATD" ) then
+		turtle.attackUp( )
+		
+	-- Placing
+	
+	elseif ( message == "PLF" ) then
+		turtle.place( )
+	elseif ( message == "PLD" ) then
+		turtle.placeDown( )
+	elseif ( message == "PLU" ) then
+		turtle.placeUp( )
+	
+	end
+	
+end
+
+while true do
+	waitForSignal( )
+end
