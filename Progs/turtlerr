@@ -1,4 +1,4 @@
-status = { turtle.getFuelLevel( ) }
+status = { ["Fuel"] = turtle.getFuelLevel( ), ["X"] = px, ["Y"] = py, ["Z"] = pz }
 
 function waitForSignal( )
 	rednet.open( "left" )
@@ -47,6 +47,24 @@ function waitForSignal( )
 		turtle.placeDown( )
 	elseif ( message == "PLU" ) then
 		turtle.placeUp( )
+	
+	-- Sucking
+	
+	elseif ( message == "SUF" ) then
+		turtle.suck( )
+	elseif ( message == "SUD" ) then
+		turtle.suckDown( )
+	elseif ( message == "SUU" ) then
+		turtle.suckUp( )
+	
+	-- Dropping
+	
+	elseif ( message == "SDR" ) then
+		turtle.drop( )
+	elseif ( message == "DRD" ) then
+		turtle.dropDown( )
+	elseif ( message == "DRU" ) then
+		turtle.dropUp( )
 	
 	end
 	
