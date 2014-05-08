@@ -1,7 +1,23 @@
 function splitString( s )
-	tab = {}
+	tab = { }
 	for word in string.gmatch( s, "%S+" ) do
 		table.insert( tab, word )
 	end
 	return tab
+end
+
+function encrypt( str, pass )
+	enc = { }
+	for c = 1, #str do
+		table.insert( enc, ( string.byte( str, c ) * pass ) )
+	end
+	return enc
+end
+
+function decrypt( str, pass )
+	dec = ""
+	for i, c in ipairs( str ) do
+		dec = dec .. string.char( c/pass )
+	end
+	return dec
 end
