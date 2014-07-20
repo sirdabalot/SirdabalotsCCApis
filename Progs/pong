@@ -1,0 +1,125 @@
+tw, tl = term.getSize( )
+
+gs = 0.5
+
+score = 0
+
+function reset( )
+
+	bx, by = math.floor( tw/2 ), math.floor( tl/2 )
+
+	bvd = math.random( 0, 1 )
+	bhd = math.random( 0, 1 )
+
+	p1x, p1y = 1, math.floor( tl/2 )
+	p2x, p2y = tw, math.floor( tl/2 )
+
+end
+
+batl = 5
+
+reset( )
+
+function drawBall( )
+	term.setCursorPos( bx, by )
+	term.write( "#" )
+end
+
+function announce( str )
+	term.setCursorPos( tw/2 - math.floor( #str/2 ), math.floor( tl/2 ) )
+	term.write( str )
+end
+
+function updateBall( )
+	-- Map collision
+	if ( by == 1 ) then
+		bvd = 1
+	elseif ( by == tl ) then
+		bvd = 0
+	end
+	
+	if ( bx > tw ) then -- Out right
+		announce( "P1 WINS!" )
+		sleep( 2 )
+		shell.exit( )
+		reset( )
+	elseif ( bx < 1 ) then -- Out left
+		announce( "P2 WINS!" )
+		sleep( 2 )
+		shell.exit( )
+		reset( )
+	end
+	
+	-- Bat collision
+	
+	if ( bx == 2 ) then
+		for i = 1, batl do
+			if ( by == p1y + i - math.floor( batl/2 ) ) then
+				bhd = 1
+			end
+		end
+	end
+	
+	if ( bx == tw - 2 ) then
+		for i = 1, batl do
+			if ( by == p1y + i - math.floor( batl/2 ) ) then
+				bhd = 0
+			end
+		end
+	end
+
+	if ( bvd == 1 ) then
+		by = by + 1
+	else
+		by = by - 1
+	end
+	
+	if ( bhd == 1 ) then
+		bx = bx + 1
+	else
+		bx = bx - 1
+	end
+	
+	p2y = by
+end
+
+function drawBats( )
+	for y = 0, batl-1 do
+		term.setCursorPos( p1x, ( p1y - math.floor( batl/2 ) ) + y )
+		term.write( "|" )
+	end
+	
+	for y = 0, batl-1 do
+		term.setCursorPos( p2x, ( p2y - math.floor( batl/2 ) ) + y )
+		term.write( "|" )
+	end
+end
+
+function waitEvent( )
+	os.startTimer( gs )
+	event, arg1 = os.pullEvent( )
+	if ( event == "timer" ) then
+		updateBall( )
+	elseif ( event == "key" ) then
+		sleep( gs )
+		if ( arg1 == 17 and p1y > 1 + math.floor( batl/2 ) ) then -- Up
+			p1y = p1y - 1
+		elseif ( arg1 == 31 and p1y < tl - math.floor( batl/2 ) ) then -- Down
+			p1y = p1y + 1
+		end
+		
+		--[[if ( arg1 == 200 ) then -- Up
+			p2y = p2y - 1
+		elseif ( arg1 == 208 ) then -- Down
+			p2y = p2y + 1
+		end]]--
+		updateBall( )
+	end
+end
+
+while true do
+	term.clear( )
+	drawBall( )
+	drawBats( )
+	waitEvent( )
+end
