@@ -1,3 +1,75 @@
+-- Points --
+
+local pointMeta = { }
+
+pointMeta.__index = pointMeta
+
+function point( X, Y )
+	local p = {
+		x = X,
+		y = Y
+	}
+	
+	return setmetatable( p, pointMeta )
+end
+
+function pointMeta:__tostring( )
+	return "X: " .. self.x .. "\nY: " .. self.y
+end
+
+-- Rects --
+
+local rectMeta = { }
+
+rectMeta.__index = rectMeta
+
+function rect( p1, p2 )
+	local r = {
+		x1 = p1.x,
+		y1 = p1.y,
+		x2 = p2.x,
+		y2 = p2.y
+	}
+	
+	return setmetatable( r, rectMeta )
+end
+
+function rectMeta:__tostring( )
+	return "X1: " .. self.x1 .. "\nY1: " .. self.y1 .. "\nX2: " .. self.x2 .. "\nY2: " .. self.y2
+end
+
+-- Buttons --
+
+local buttonMeta = { }
+
+buttonMeta.__index = buttonMeta
+
+function button( R, COL, LAB )
+	local b = {
+		r = R,
+		col = COL,
+		lab = LAB
+	}
+	
+	return setmetatable( b, buttonMeta )
+end
+
+function buttonMeta:draw( per )
+	per.setBackgroundColour( self.col )
+	for x = self.r.x1, self.r.x2 do
+		for y = self.r.y1, self.r.y2 do
+			per.setCursorPos( x, y )
+			per.write( " " )
+		end
+	end
+	local xpos = self.r.x1 + math.ceil( ( self.r.x2 - self.r.x1 ) / 2 ) - math.ceil( #self.lab / 2 )
+	local ypos = self.r.y1 + math.floor( ( self.r.y2 - self.r.y1 ) / 2 )
+	per.setCursorPos( xpos, ypos )
+	per.write( self.lab )
+end
+
+-- Other --
+
 function printCentered( per, str, ypos )
         pw, pl = per.getSize( )
         per.setCursorPos( ( ( pw / 2 ) - ( #str / 2 ) ), ypos )
@@ -32,52 +104,16 @@ function fillBackground( per, str, col )
 end
 
 function drawWindow( per, str, col, rect )
-        per.setCursorPos( rect["x1"], rect["y1"] )
+        per.setCursorPos( rect.x1, rect.y1 )
         per.setBackgroundColour( col )
-        for x = rect["x1"], rect["x2"] do
-                for y = rect["y1"], rect["y2"] do
+        for x = rect.x1, rect.x2 do
+                for y = rect.y1, rect.y2 do
                         per.setCursorPos( x, y )
                         per.write( " " )
                 end
         end
-        per.setCursorPos( rect["x1"], rect["y1"] )
+        per.setCursorPos( rect.x1, rect.y1 )
         per.write( str )
-end
-
-function drawButton( per, bdat )
-	per.setBackgroundColor( bdat["col"] )
-	for x = bdat["x1"], bdat["x2"] do
-		for y = bdat["y1"], bdat["y2"] do
-			per.setCursorPos( x, y )
-			per.write( " " )
-		end
-	end
-	lx = math.ceil( bdat["x1"] + ( bdat["x2"] - bdat["x1"] ) / 2 - #bdat["label"] / 2 )
-	ly = math.floor( bdat["y1"] + ( bdat["y2"] - bdat["y1"] ) / 2 )
-	per.setCursorPos( lx, ly )
-	per.write( bdat["label"] )
-end
-
-function drawTabs( per, tabs, ypos, sel )
-        pw, pl = per.getSize( )
-        per.setBackgroundColour( colours.blue )
-        for i = 1, pw do
-                per.setCursorPos( i, ypos )
-                per.write( " " )
-        end
-        per.setCursorPos( 1, ypos )
-        for i = 1, #tabs do
-                ccx, ccy = term.getCursorPos( )
-                per.setCursorPos( ccx + 1, ypos )
-                if i == sel then
-                        per.setBackgroundColour( colours.white )
-                        per.setTextColour( colours.blue )
-                else
-                        per.setBackgroundColour( colours.blue )
-                        per.setTextColour( colours.white )
-                end
-                per.write( tabs[ i ] )
-        end
 end
 
 function drawIMG( per, img, x, y )
@@ -99,23 +135,10 @@ function drawAnim( per, anim, x, y, delay )
         end
 end
 
-function errMsg( per, str, dtime )
-        pw, pl = per.getSize( )
-        fillBackground( per, " ", colours.blue )
-        printCentered( per, str, ( pl / 2 ) + 1 )
-        for i = 1, dtime do
-                printCentered( per, "            ", pl / 2 )
-                sleep( 0.5 )
-                printCentered( per, "SYS.FLR:", pl / 2 )
-                sleep( 0.5 )
-        end
-        clearScreen( per )
-end
-
-function drawCircle( per, col, x, y, r )
+function drawCircle( per, col, p, r )
         per.setBackgroundColour( col )
         for i = 1, 360 do
-                per.setCursorPos( x + ( math.cos( i ) * r ), y + ( math.sin( i ) * r ) )
+                per.setCursorPos( p.x + ( math.cos( i ) * r ), p.y + ( math.sin( i ) * r ) )
                 per.write( " " )
         end
 end
@@ -139,7 +162,7 @@ function drawProgressBar( per, x, y, wi, len, fill )
 end
 
 function inRange( x, y, rect )
-	if ( x >= rect["x1"] and x <= rect["x2"] and y >= rect["y1"] and y <= rect["y2"] ) then
+	if ( x >= rect.x1 and x <= rect.x2 and y >= rect.y1 and y <= rect.y2 ) then
 		return true
 	else
 		return false
@@ -150,22 +173,5 @@ function printVertical( per, x, y, str )
 	for i = 1, string.len( str ) do
 		per.setCursorPos( x, y + i )
 		ch = string.sub( str, i, i )
-	end
-end
-
-function drawTable( per, x, y, w, h, d )
-	for i = 1, w do
-		per.setCursorPos( x - 1 + i, y )
-		per.write( "=" )
-		per.setCursorPos( x - 1 + i, y - 1 + h )
-		per.write( "=" )
-	end
-	for i = 1, h - 2 do
-		per.setCursorPos( x, y + i )
-		per.write( "|" )
-		per.setCursorPos( x - 1 + w, y + i )
-		per.write( "|" )
-		per.setCursorPos( x - 1 + d, y + i )
-		per.write( "|" )
 	end
 end
