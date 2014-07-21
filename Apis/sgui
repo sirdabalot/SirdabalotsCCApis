@@ -68,6 +68,75 @@ function buttonMeta:draw( per )
 	per.write( self.lab )
 end
 
+-- Tables --
+
+tableMeta = { }
+
+tableMeta.__index = tableMeta
+
+function newTable( R, S )
+	local t = {
+		r = R,
+		s = S
+	}
+	
+	return setmetatable( t, tableMeta )
+end
+
+function tableMeta:draw( per )
+
+	-- Draw Horizontal --
+
+	for x = self.r.x1, self.r.x2 do
+		per.setCursorPos( x, self.r.y1 )
+		per.write( "=" )
+	end
+	
+	for x = self.r.x1, self.r.x2 do
+		per.setCursorPos( x, self.r.y2 )
+		per.write( "=" )
+	end
+	
+	-- Draw Vertical --
+	
+	for y = self.r.y1, self.r.y2 do
+		per.setCursorPos( self.r.x1, y )
+		per.write( "|" )
+	end
+	
+	for y = self.r.y1, self.r.y2 do
+		per.setCursorPos( self.r.x2, y )
+		per.write( "|" )
+	end
+	
+	for y = self.r.y1, self.r.y2 do
+		per.setCursorPos( self.r.x1 + self.s + 1, y )
+		per.write( "|" )
+	end
+	
+	-- Draw Intersections --
+	
+	per.setCursorPos( self.r.x1, self.r.y1 )
+	per.write( "+" )
+	
+	per.setCursorPos( self.r.x1, self.r.y2 )
+	per.write( "+" )
+	
+	per.setCursorPos( self.r.x2, self.r.y1 )
+	per.write( "+" )
+	
+	per.setCursorPos( self.r.x2, self.r.y2 )
+	per.write( "+" )
+	
+		-- Seperator Intersections --
+	
+	per.setCursorPos( self.r.x1 + self.s + 1, self.r.y1 )
+	per.write( "+" )
+	
+	per.setCursorPos( self.r.x1 + self.s + 1, self.r.y2 )
+	per.write( "+" )
+end
+
 -- Other --
 
 function printCentered( per, str, ypos )
@@ -138,7 +207,7 @@ end
 function drawCircle( per, col, p, r )
         per.setBackgroundColour( col )
         for i = 1, 360 do
-                per.setCursorPos( p.x + ( math.cos( i ) * r ), p.y + ( math.sin( i ) * r ) )
+                per.setCursorPos( p.x + ( math.sin( i ) * r ), p.y + ( math.cos( i ) * r ) )
                 per.write( " " )
         end
 end
