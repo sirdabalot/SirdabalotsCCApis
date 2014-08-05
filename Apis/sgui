@@ -62,8 +62,8 @@ function buttonMeta:draw( per )
 			per.write( " " )
 		end
 	end
-	local xpos = self.r.x1 + math.ceil( ( self.r.x2 - self.r.x1 ) / 2 ) - math.ceil( #self.lab / 2 )
-	local ypos = self.r.y1 + math.floor( ( self.r.y2 - self.r.y1 ) / 2 )
+	local xpos = 2 + self.r.x1 + math.ceil( ( self.r.x2 - self.r.x1 ) / 2 ) - math.ceil( #self.lab / 2 )
+	local ypos = 2 + self.r.y1 + math.ceil( ( self.r.y2 - self.r.y1 ) / 2 )
 	per.setCursorPos( xpos, ypos )
 	per.write( self.lab )
 end
