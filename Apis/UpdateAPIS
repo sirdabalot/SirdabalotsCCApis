@@ -3,16 +3,16 @@ term.setCursorPos( 1, 1 )
 
 udf = { "sgui", "sbuild", "smisc", "s7seg", "sls" }
 
-if ( !fs.exists( "SApis" ) ) then
+if ( !fs.exists( "/SApis" ) ) then
 	print( "SApis folder does not exist! Creating..." )
-	fs.makeDir( "SApis" )
+	fs.makeDir( "/SApis" )
 else
 	print( "Placing all files in /SApis..." )
 end
 
 for i = 1, #udf do
 
-	fh = fs.open( udf[ i ], "w" )
+	fh = fs.open( "/SApis/" .. udf[ i ], "w" )
 
 	print( "Updating" .. udf[ i ] .. "..." )
 
