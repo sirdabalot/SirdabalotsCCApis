@@ -1,0 +1,29 @@
+function send( data, clkside, dside )
+	for i = 1, 8 do
+		rs.setAnalogOutput( clkside, 15 )
+		if ( data:sub( i, i ) == "0" ) then
+			rs.setAnalogOutput( dside, 0 )
+		else
+			rs.setAnalogOutput( dside, 15 )
+		end
+		sleep( 0.2 )
+		rs.setAnalogOutput( clkside, 0 )
+		sleep( 0.2 )
+	end
+	rs.setAnalogOutput( dside, 0 )
+end
+
+function recieve( clkside, dside )
+	local data = ""
+	for i = 1, 8 do
+		repeat
+			os.pullEvent( "redstone" )
+		until ( rs.getAnalogInput( clkside ) > 0 )
+		if ( rs.getAnalogInput( dside ) > 0 ) then
+			data = data .. "1"
+		else
+			data = data .. "0"
+		end
+	end
+	return data
+end
