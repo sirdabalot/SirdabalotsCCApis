@@ -1,0 +1,31 @@
+local targs = {...}
+
+local side = targs[ 1 ]
+local path = targs[ 2 ]
+local prot = targs[ 3 ]
+
+rednet.open( side )
+
+fh = fs.open( path, "w" )
+
+while true do
+	event, sender, msg, sprot = os.pullEvent( "rednet_message" )
+	if ( msg == "!SOF!" and sprot == prot ) then
+		break
+	end
+end
+
+print( "Caught start of file!" )
+
+while true do
+	event, sender, msg, sprot = os.pullEvent( "rednet_message" )
+	if ( msg ~= "!EOF!" and sprot == prot ) then
+		fh.writeLine( msg )
+	elseif ( msg == "!EOF!" ) then
+		break
+	end
+end
+
+print( "Caught end of file! Written to " .. path .. "!" )
+
+fh.close( )

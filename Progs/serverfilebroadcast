@@ -1,4 +1,0 @@
-local targs = {...}
-
-local side = targs[ 1 ]
-local path = targs[ 2 ]

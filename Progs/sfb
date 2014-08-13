@@ -1,0 +1,41 @@
+local targs = {...}
+
+local side = targs[ 1 ]
+local path = targs[ 2 ]
+local prot = targs[ 3 ]
+
+local st = 0.1
+
+rednet.open( side )
+
+fh = fs.open( path, "r" )
+
+flines = { }
+
+ec = 0
+
+while true do
+	local rl = fh.readLine( )
+	if ( rl == nil ) then
+		ec = ec + 1
+	end
+	if ( ec == 5 ) then
+		break
+	end
+	table.insert( flines, rl )
+end
+
+fh.close( )
+
+fll = #flines
+
+while true do
+	rednet.broadcast( "!SOF!", prot )
+	sleep( st )
+	for i = 1, fll do
+		rednet.broadcast( flines[ i ], prot )
+		sleep( st )
+	end
+	rednet.broadcast( "!EOF!", prot )
+	sleep( st )
+end
