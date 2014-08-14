@@ -145,10 +145,16 @@ function buildPlan( bdat )
 				if ( cch == "#" ) then
 					turtle.forward( )
 				elseif ( cch == "+" ) then
+					turtle.digDown( )
 					turtle.placeDown( )
 					turtle.forward( )
 				elseif ( cch == "-" ) then
 					turtle.digDown( )
+					turtle.forward( )
+				else
+					turtle.select( tonumber( cch ) )
+					turtle.digDown( )
+					turtle.placeDown( )
 					turtle.forward( )
 				end
 			end
@@ -171,7 +177,7 @@ function buildPlan( bdat )
 	end
 	-- Return --
 	turtle.back( )
-	for i = 1, #bdat + 1 do
+	for i = 1, #bdat do
 		turtle.down( )
 	end
 end
