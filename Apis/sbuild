@@ -130,3 +130,45 @@ function digCube( w, l, h )
                 turtle.down( )
         end
 end
+
+function buildPlan( bdat )
+	-- Layers --
+	for l = 1, #bdat do
+		-- Rows --
+		for r = 1, #bdat[ l ] do
+			-- Blocks --
+			for b = 1, #bdat[ l ][ r ] do
+				cch = string.sub( bdat[ l ][ r ], b, b )
+				if ( cch == "#" ) then
+					turtle.forward( )
+				elseif ( cch == "+" ) then
+					turtle.placeDown( )
+					turtle.forward( )
+				elseif ( cch == "-" ) then
+					turtle.digDown( )
+					turtle.forward( )
+				end
+			end
+			-- Return to beginning of row --
+			for b = 1, #bdat[ l ][ r ] do
+				turtle.back( )
+			end
+			-- Move to next row --
+			turtle.turnRight( )
+			turtle.forward( )
+			turtle.turnLeft( )
+		end
+		-- Move to next layer --
+		turtle.turnRight( )
+		for i = 1, #bdat[ l ] do
+			turtle.back( )
+		end
+		turtle.turnLeft( )
+		turtle.up( )
+	end
+	-- Return --
+	turtle.back( )
+	for i = 1. #bdat + 1 do
+		turtle.down( )
+	end
+end
