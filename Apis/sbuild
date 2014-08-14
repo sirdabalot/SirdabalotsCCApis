@@ -1,134 +1,136 @@
 function fTurn( )
-        if math.random( 0, 1 ) == 1 then
-                for i = 1, 2 do
-                        turtle.turnRight( )
-                end
-        else
-                for i = 1, 2 do
-                        turtle.turnLeft( )
-                end
-        end
+	if math.random( 0, 1 ) == 1 then
+		for i = 1, 2 do
+			turtle.turnRight( )
+		end
+	else
+		for i = 1, 2 do
+			turtle.turnLeft( )
+		end
+	end
 end
 
 function selectSlot( )
-        for i = 1, 16 do
-                if turtle.getItemCount( i ) > 0 and turtle.getItemCount( i ) ~= nil then
-                        turtle.select( i )
-                end
-        end
+	for i = 1, 16 do
+		if turtle.getItemCount( i ) > 0 and turtle.getItemCount( i ) ~= nil then
+			turtle.select( i )
+			return true
+		end
+	end
+	return false
 end
 
 function buildLine( l )
-        for i = 1, l - 1 do
-                selectSlot( )
-                turtle.placeDown( )
-                turtle.forward( )
-        end
-        selectSlot( )
-        turtle.placeDown( )
+	for i = 1, l - 1 do
+		selectSlot( )
+		turtle.placeDown( )
+		turtle.forward( )
+	end
+	selectSlot( )
+	turtle.placeDown( )
 end
 
 function buildQuad( w, l )
-        for i = 1, w - 1 do
-                buildLine( l )
-                for n = 1, l - 1 do
-                        turtle.back( )
-                end
-                turtle.turnRight( )
-                turtle.forward( )
-                turtle.turnLeft( )
-        end
-        buildLine( l )
+	for i = 1, w - 1 do
+		buildLine( l )
+		for n = 1, l - 1 do
+			turtle.back( )
+		end
+		turtle.turnRight( )
+		turtle.forward( )
+		turtle.turnLeft( )
+	end
+	buildLine( l )
 end
 
 function buildWall( w, l, h )
-        for i = 1, h-1 do
-                buildLine( l )
-                turtle.turnRight( )
-                turtle.forward( )
-                buildLine( w - 1 )
-                turtle.turnRight( )
-                turtle.forward( )
-                buildLine( l-1 )
-                turtle.turnRight( )
-                turtle.forward( )
-                buildLine( w-2 )
-                turtle.up( )
-                turtle.forward( )
-                turtle.turnRight( )
-        end
-        buildLine( l )
-        turtle.turnRight( )
-        turtle.forward( )
-        buildLine( w - 1 )
-        turtle.turnRight( )
-        turtle.forward( )
-        buildLine( l - 1 )
-        turtle.turnRight( )
-        turtle.forward( )
-        buildLine( w - 2 )
+	for i = 1, h-1 do
+		buildLine( l )
+		turtle.turnRight( )
+		turtle.forward( )
+		buildLine( w - 1 )
+		turtle.turnRight( )
+		turtle.forward( )
+		buildLine( l-1 )
+		turtle.turnRight( )
+		turtle.forward( )
+		buildLine( w-2 )
+		turtle.up( )
+		turtle.forward( )
+		turtle.turnRight( )
+	end
+	buildLine( l )
+	turtle.turnRight( )
+	turtle.forward( )
+	buildLine( w - 1 )
+	turtle.turnRight( )
+	turtle.forward( )
+	buildLine( l - 1 )
+	turtle.turnRight( )
+	turtle.forward( )
+	buildLine( w - 2 )
 end
 
 function buildHollow( w, l, h )
-        buildQuad( w, l )
-        fTurn( )
-        turtle.up( )
-        buildWall( w, l, h - 2 )
-        turtle.forward( )
-        turtle.turnRight( )
-        turtle.up( )
-        buildQuad( w, l )
+	buildQuad( w, l )
+	fTurn( )
+	turtle.up( )
+	buildWall( w, l, h - 2 )
+	turtle.forward( )
+	turtle.turnRight( )
+	turtle.up( )
+	buildQuad( w, l )
 end
 
 function buildCube( w, l, h )
-        for i = 1, h do
-                buildQuad( w, l )
-                for n = 1, l - 1 do
-                        turtle.back( )
-                end
-                turtle.turnRight( )
-                for n = 1, w - 1 do
-                        turtle.back( )
-                end
-                turtle.turnLeft( )
-                turtle.up( )
-        end
+	for i = 1, h do
+		buildQuad( w, l )
+		for n = 1, l - 1 do
+			turtle.back( )
+		end
+		turtle.turnRight( )
+		for n = 1, w - 1 do
+			turtle.back( )
+		end
+		turtle.turnLeft( )
+		turtle.up( )
+	end
 end
 
 function digLine( l )
-        for i = 1, l - 1 do
-                turtle.digDown( )
-                turtle.forward( )
-        end
-        turtle.digDown()
+	for i = 1, l - 1 do
+		turtle.digDown( )
+		turtle.forward( )
+	end
+	turtle.digDown()
 end
 
 function digQuad( w, l )
-        for i = 1, w - 1 do
-                digLine( l )
-                for n = 1, l - 1 do
-                        turtle.back( )
-                end
-                turtle.turnRight( )
-                turtle.forward( )
-                turtle.turnLeft( )
-        end
-        digLine( l )
+	for i = 1, w - 1 do
+		digLine( l )
+		for n = 1, l - 1 do
+			turtle.back( )
+		end
+		turtle.turnRight( )
+		turtle.forward( )
+		turtle.turnLeft( )
+	end
+	digLine( l )
 end
 
 function digCube( w, l, h )
-        for i = 1, h do
-                digQuad( w, l )
-                for n = 1, l - 1 do
-                        turtle.back( )
-                end
-                turtle.turnRight( )
-                for n = 1, w - 1 do
-                        turtle.back( )
-                end
-                turtle.turnLeft( )
-                turtle.down( )
-        end
+	for i = 1, h do
+		digQuad( w, l )
+		for n = 1, l - 1 do
+			turtle.back( )
+		end
+		turtle.turnRight( )
+		for n = 1, w - 1 do
+			turtle.back( )
+		end
+		turtle.turnLeft( )
+		turtle.down( )
+	end
 end
 
 function buildPlan( bdat )
@@ -138,6 +140,7 @@ function buildPlan( bdat )
 		for r = 1, #bdat[ l ] do
 			-- Blocks --
 			for b = 1, #bdat[ l ][ r ] do
+				selectSlot( )
 				cch = string.sub( bdat[ l ][ r ], b, b )
 				if ( cch == "#" ) then
 					turtle.forward( )
