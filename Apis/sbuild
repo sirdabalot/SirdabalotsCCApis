@@ -168,7 +168,7 @@ function buildPlan( bdat )
 	end
 	-- Return --
 	turtle.back( )
-	for i = 1. #bdat + 1 do
+	for i = 1, #bdat + 1 do
 		turtle.down( )
 	end
 end
