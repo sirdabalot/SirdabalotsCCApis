@@ -139,3 +139,47 @@ function laMeta:turnRight( )
 	end
 	laMeta.save( self )
 end
+
+function laMeta:goToPos( x, y, z )
+	if ( self.x < x ) then
+		while ( self.dir ~= 2 ) do
+			laMeta.turnRight( self )
+		end
+	elseif ( self.x > x ) then
+		while ( self.dir ~= 4 ) do
+			laMeta.turnRight( self )
+		end
+	end
+	
+	while ( self.x ~= x ) do
+		turtle.dig( )
+		laMeta.forward( self )
+	end
+	
+	if ( self.z < z ) then
+		while ( self.dir ~= 3 ) do
+			laMeta.turnLeft( self )
+		end
+	elseif ( self.z > z ) then
+		while ( self.dir ~= 1 ) do
+			laMeta.turnLeft( self )
+		end
+	end
+	
+	while ( self.z ~= z ) do
+		turtle.dig( )
+		laMeta.forward( self )
+	end
+	
+	if ( self.y < y ) then
+		while ( self.y ~= y ) do
+			turtle.digUp( )
+			laMeta.up( self )
+		end
+	elseif ( self.y > y ) then
+		while ( self.y ~= y ) do
+			turtle.digDown( )
+			laMeta.down( self )
+		end
+	end
+end
