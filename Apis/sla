@@ -1,0 +1,141 @@
+--[[
+	Directions:
+	1 = N
+	2 = E
+	3 = S
+	4 = W
+	
+	Axis:
+	N/S = Z-/Z+
+	E/W = X+/X-
+	
+	Y IS VERTICAL!
+]]--
+
+function dirToString( dir )
+	if ( dir == 1 ) then
+		return "NORTH"
+	elseif ( dir == 2 ) then
+		return "EAST"
+	elseif ( dir == 3 ) then
+		return "SOUTH"
+	elseif ( dir == 4 ) then
+		return "WEST"
+	end
+end
+
+local laMeta = {
+	dir = 1,
+	x = 0,
+	y = 0,
+	z = 0
+}
+
+function laMeta:save( )
+	local t = {
+		dir = self.dir,
+		x = self.x,
+		y = self.y,
+		z = self.z
+	}
+	fh = fs.open( "lam", "w" )
+	fh.write( textutils.serialize( t ) )
+	fh.close( )
+end
+
+laMeta.__index = laMeta
+
+function la( ... )
+	local o = { }
+	if ( #arg == 0 ) then
+		if fs.exists( "lam" ) then
+			fh = fs.open( "lam", "r" )
+			o = textutils.unserialize( fh.readAll( ) )
+			fh.close( )
+		else
+			laMeta:save( )
+		end
+	else
+		o = {
+			dir = arg[ 1 ],
+			x = arg[ 2 ],
+			y = arg[ 3 ],
+			z = arg[ 4 ]
+		}
+		fh = fs.open( "lam", "w" )
+		fh.write( textutils.serialize( o ) )
+		fh.close( )
+	end
+	return setmetatable( o, laMeta )
+end
+
+function laMeta:__tostring( )
+	print( "Dir: " .. self.dir .. " " .. dirToString( self.dir ) )
+	print( "X: " .. self.x )
+	print( "Y: " .. self.y )
+	print( "Z: " .. self.z )
+end
+
+function laMeta:forward( )
+	if ( turtle.forward( ) ) then
+		if ( self.dir == 1 ) then
+			self.z = self.z - 1
+		elseif ( self.dir == 3 ) then
+			self.z = self.z + 1
+		elseif ( self.dir == 2 ) then
+			self.x = self.x + 1
+		elseif ( self.dir == 4 ) then
+			self.x = self.x - 1
+		end
+		laMeta.save( self )
+	end
+end
+
+function laMeta:back( )
+	if ( turtle.back( ) ) then
+		if ( self.dir == 1 ) then
+			self.z = self.z + 1
+		elseif ( self.dir == 3 ) then
+			self.z = self.z - 1
+		elseif ( self.dir == 2 ) then
+			self.x = self.x - 1
+		elseif ( self.dir == 4 ) then
+			self.x = self.x + 1
+		end
+		laMeta.save( self )
+	end
+end
+
+function laMeta:up( )
+	if ( turtle.up( ) ) then
+		self.y = self.y + 1
+		laMeta.save( self )
+	end
+end
+
+function laMeta:down( )
+	if ( turtle.down( ) ) then
+		self.y = self.y - 1
+		laMeta.save( self )
+	end
+end
+
+function laMeta:turnLeft( )
+	turtle.turnLeft( )
+	if ( self.dir > 1 ) then
+		self.dir = self.dir - 1
+	else
+		self.dir = 4
+	end
+	laMeta.save( self )
+end
+
+function laMeta:turnRight( )
+	turtle.turnRight( )
+	if ( self.dir < 4 ) then
+		self.dir = self.dir + 1
+	else
+		self.dir = 1
+	end
+	laMeta.save( self )
+end
